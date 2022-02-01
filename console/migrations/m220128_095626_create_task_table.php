@@ -33,7 +33,7 @@ class m220128_095626_create_task_table extends Migration
             'employee_id'
         );
     }
-
+    
     /**
      * {@inheritdoc}
      */
