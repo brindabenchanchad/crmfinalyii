@@ -1,52 +1,42 @@
 <?php
+
     namespace frontend\controllers;
+    use Yii;
     use yii\rest\ActiveController;
+    use common\models\Plan;
+    use common\models\PlanSearch;
     use yii\filters\auth\HttpBasicAuth;
-    
-    class PlanController extends ActiveController
+    use frontend\controllers\baseController;
+
+
+    class PlanController extends BaseController
     {
-      
-        public $modelClass = 'common\models\Plan';
-
-        /**
- * List of allowed domains.
- * Note: Restriction works only for AJAX (using CORS, is not secure).
- *
- * @return array List of domains, that can access to this API
- */
-
-
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-
-        // remove authentication filter
-        $auth = $behaviors['authenticator'];
-        unset($behaviors['authenticator']);
-        
-        // add CORS filter
-        $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::class,
-        ];
-        
-        // re-add authentication filter
-        $behaviors['authenticator'] = $auth;
-        // avoid authentication on CORS-pre-flight requests (HTTP OPTIONS method)
-        $behaviors['authenticator']['except'] = ['options'];
-
-        return $behaviors;
-    }
-
-        public function actions()
+        public $modelClass = 'common\models\PlanSearch';
+        public function actionIndex()
         {
-        $actions = parent::actions();
+             $searchModel = new PlanSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
+  
+            return $dataProvider;
+        }
+        public function actionCreate()
+        {
+             $plan = new Plan();
+             $plan->load(Yii::$app->getRequest()->getBodyParams(),'');
+                $plan->save();
+                    return $plan;
+        }
+        public function actionDelete($id)
+        {
+            // echo $id;
+            $plan = Plan::findOne($id);
 
-        $actions['index']['dataFilter'] = [
-        'class' => \yii\data\ActiveDataFilter::class,
-        'searchModel' => 'common\models\Plan',
-    ];
-
-    return $actions;
+            if($plan->load(Yii::$app->getRequest()->getBodyParams(),'')) 
+            {
+                $plan->save();
+                return "Edited sucessfully";
+            }
+                return "Edition falied.. try again";
+        }
     }
-    }   
 ?>
