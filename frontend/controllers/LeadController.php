@@ -6,6 +6,7 @@
     use common\models\LeadSearch;
     use common\models\Person;
     use common\models\Address;
+    use common\models\Opportunity;
     use yii\filters\auth\HttpBasicAuth;
     use frontend\controllers\BaseController;
 
@@ -13,8 +14,10 @@
     {
         public $modelClass = 'common\models\LeadSearch';
 
-        public function actionConvert($id) {
-            echo "";
+        public function actionConvert() {
+            $opportunity = new Opportunity();
+            $opportunity->load(Yii::$app->getRequest()->getBodyParams(),'');
+            $opportunity->save();
         }
 
         public function actionIndex()

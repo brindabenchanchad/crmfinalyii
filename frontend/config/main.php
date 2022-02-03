@@ -66,6 +66,7 @@ return [
                     'extraPatterns' => [
                         'OPTIONS,DELETE delete/{id}' => 'delete',
                         'OPTIONS,GET index' => 'index',
+                        'OPTIONS,POST convert' => 'convert',
                         // 'OPTIONS,GET reject/{id}' => 'reject',
                         // 'OPTIONS,POST initialize-content/{id}' => 'initialize-content',
                         // 'OPTIONS,GET ready-for-approval/{id}' => 'ready-for-approval',
