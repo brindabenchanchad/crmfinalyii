@@ -35,10 +35,10 @@ class Opportunity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lead_id', 'person_id', 'plan_id'], 'required'],
+            [['person_id', 'plan_id'], 'required'],
             [['lead_id', 'person_id', 'plan_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['lead_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lead::className(), 'targetAttribute' => ['lead_id' => 'lead_id']],
+            // [['lead_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lead::className(), 'targetAttribute' => ['lead_id' => 'lead_id']],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'person_id']],
             [['plan_id'], 'exist', 'skipOnError' => true, 'targetClass' => Plan::className(), 'targetAttribute' => ['plan_id' => 'plan_id']],
         ];

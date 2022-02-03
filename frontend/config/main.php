@@ -42,7 +42,7 @@ return [
             'showScriptName' => false,
             'enableStrictParsing'=>true,
             'rules' => [
-        [
+            [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'plan',
                     'extraPatterns' => [
@@ -56,6 +56,25 @@ return [
                         // 'OPTIONS,POST add-collection-content/{id}' => 'add-collection-content',
                         // 'OPTIONS,POST update-collection/{id}' => 'update-collection',
                         // 'OPTIONS,PUT update-content/{id}' => 'update-content',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'opportunity',
+                    'extraPatterns' => [
+                        'OPTIONS,DELETE delete/{id}' => 'delete',
+                        'OPTIONS,PUT update/{id}' => 'update',
+                        'OPTIONS,GET index' => 'index',
+                        // 'OPTIONS,PUT put/{id}' => 'put',
+                        // 'OPTIONS,DELETE delete/{id}' => 'delete',
+                        // 'OPTIONS,GET reject/{id}' => 'reject',
+                        // 'OPTIONS,POST initialize-content/{id}' => 'initialize-content',
+                        // 'OPTIONS,GET ready-for-approval/{id}' => 'ready-for-approval',
+                        // 'OPTIONS,GET submit-for-approval/{id}' => 'submit-for-approval',
+                        // 'OPTIONS,DELETE delete-collection/{id}' => 'delete-collection',
+                        // 'OPTIONS,GET check-submit-for-approval/{id}' => 'check-submit-for-approval',
+                        // 'OPTIONS,POST add-collection-content/{id}' => 'add-collection-content',
+                        // 'OPTIONS,POST update-collection/{id}' => 'update-collection',
                     ],
                 ],
     ],
