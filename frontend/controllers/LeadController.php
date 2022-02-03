@@ -13,13 +13,22 @@
     {
         public $modelClass = 'common\models\LeadSearch';
 
+        public function actionConvert($id) {
+            echo "";
+        }
+
         public function actionIndex()
         {
             $searchModel = new LeadSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
   
             return $dataProvider;
-        // }
+        }
+
+        public function actionView($id)
+        {
+            $lead = LeadSearch::findOne($id);
+            return $lead;
         }
 
         public function actionCreate()
@@ -55,7 +64,7 @@
                     return "Edited sucessfully";
                 }
             }
-            return "Edition falied.. try again";
+            return "Edition failed.. try again";
         }
 
         public function actionDelete($id)
@@ -64,9 +73,7 @@
             $lead->is_deleted = 1;
             $lead->save();
             return "Deleted successfully";
-        }
-
-        
+        }        
         
     }   
 ?>

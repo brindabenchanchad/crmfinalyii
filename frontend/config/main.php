@@ -14,7 +14,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
-            'parsers'=>['application/json'=>'yii\web\JsonParser']
+            'parsers'=>['application/json'=>'yii\web\JsonParser'],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -43,25 +43,43 @@ return [
             'enableStrictParsing'=>true,
             'rules' => [
                 [
-                            'class' => 'yii\rest\UrlRule',
-                            'controller' => 'lead',
-                            'extraPatterns' => [
-                                'OPTIONS,DELETE delete/{id}' => 'delete',
-                                'OPTIONS,POST post' => 'post',
-                                'OPTIONS,GET leads' => 'leads',
-                                // 'OPTIONS,GET reject/{id}' => 'reject',
-                                // 'OPTIONS,POST initialize-content/{id}' => 'initialize-content',
-                                // 'OPTIONS,GET ready-for-approval/{id}' => 'ready-for-approval',
-                                // 'OPTIONS,GET submit-for-approval/{id}' => 'submit-for-approval',
-                                // 'OPTIONS,DELETE delete-collection/{id}' => 'delete-collection',
-                                // 'OPTIONS,GET check-submit-for-approval/{id}' => 'check-submit-for-approval',
-                                // 'OPTIONS,POST add-collection-content/{id}' => 'add-collection-content',
-                                // 'OPTIONS,POST update-collection/{id}' => 'update-collection',
-                                // 'OPTIONS,PUT update-content/{id}' => 'update-content',
-                            ],
-                        ],
-        ],
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'plan',
+                    'extraPatterns' => [
+                        // action => 'url'
+                        'OPTIONS,DELETE delete/{id}' => 'delete',
+                        'OPTIONS,POST create' => 'create'
+                        // 'OPTIONS,GET reject/{id}' => 'reject',
+                        // 'OPTIONS,POST initialize-content/{id}' => 'initialize-content',
+                        // 'OPTIONS,GET ready-for-approval/{id}' => 'ready-for-approval',
+                        // 'OPTIONS,GET submit-for-approval/{id}' => 'submit-for-approval',
+                        // 'OPTIONS,DELETE delete-collection/{id}' => 'delete-collection',
+                        // 'OPTIONS,GET check-submit-for-approval/{id}' => 'check-submit-for-approval',
+                        // 'OPTIONS,POST add-collection-content/{id}' => 'add-collection-content',
+                        // 'OPTIONS,POST update-collection/{id}' => 'update-collection',
+                        // 'OPTIONS,PUT update-content/{id}' => 'update-content',
+                    ],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'lead',
+                    'extraPatterns' => [
+                        'OPTIONS,DELETE delete/{id}' => 'delete',
+                        'OPTIONS,GET index' => 'index',
+                        // 'OPTIONS,GET reject/{id}' => 'reject',
+                        // 'OPTIONS,POST initialize-content/{id}' => 'initialize-content',
+                        // 'OPTIONS,GET ready-for-approval/{id}' => 'ready-for-approval',
+                        // 'OPTIONS,GET submit-for-approval/{id}' => 'submit-for-approval',
+                        // 'OPTIONS,DELETE delete-collection/{id}' => 'delete-collection',
+                        // 'OPTIONS,GET check-submit-for-approval/{id}' => 'check-submit-for-approval',
+                        // 'OPTIONS,POST add-collection-content/{id}' => 'add-collection-content',
+                        // 'OPTIONS,POST update-collection/{id}' => 'update-collection',
+                        // 'OPTIONS,PUT update/{id}' => 'update',
+                    ],
+                ],
+    ],
+],
     ],
     
-],
+
 ];

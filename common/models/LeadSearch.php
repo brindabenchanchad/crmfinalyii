@@ -14,17 +14,22 @@ class LeadSearch extends Lead
      * {@inheritdoc}
      */
     public function fields() {
-        return ['lead_id'];
+        return [
+            'lead_id',
+            'person' => function ($model) {
+                return $model->person;
+            },
+            'address' => function ($model) {
+                return $model->person->address;
+            }
+        ];
     }
-
-    public $firstname;
  
     public function rules()
     {
         return [
             [['lead_id'], 'integer'],
-            [['firstname'], 'string'],
-            [['person_id', 'created_at', 'firstname'], 'safe'],
+            [['lead_id','person_id', 'created_at'], 'safe'],
         ];
     }
 
@@ -66,8 +71,12 @@ class LeadSearch extends Lead
                 return $filter;
             }
         }
-        $query = Lead::find();
-        $query->joinWith(['person']);
+        $query = self::find();
+        $query->joinWith(['person', 'person.address']);
+        
+        // $query->joinWith(['address']);
+
+        $query->where('is_deleted = 0');
        
         if ($filterCondition !== null) {
             $query->andWhere($filterCondition);
@@ -89,9 +98,31 @@ class LeadSearch extends Lead
                     'desc' => ['firstname' => SORT_DESC],
                     'label' => 'Person Name',
                     'default' => SORT_ASC
-                ]
+                ],
+                'email_id' => [
+                    'asc' => ['email_id' => SORT_ASC],
+                    'desc' => ['email_id' => SORT_DESC],
+                    'label' => 'Person Name',
+                    'default' => SORT_ASC
+                ],
+                'city' => [
+                    'asc' => ['address.city' => SORT_ASC],
+                    'desc' => ['address.city' => SORT_DESC],
+                    'label' => 'Person Name',
+                    'default' => SORT_ASC
+                ],
+                'contact_no' => [
+                    'asc' => ['contact_no' => SORT_ASC],
+                    'desc' => ['contact_no' => SORT_DESC],
+                    'label' => 'Person Name',
+                    'default' => SORT_ASC
+                ],
             ],
         ]);
+
+        // print_r($dataProvider->$query->createCommand()->rawSql;
+        // print_r($dataProvider->query->createCommand()->rawSql);
+        // die;
         
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

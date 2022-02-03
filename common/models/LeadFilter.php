@@ -13,6 +13,9 @@ class LeadFilter extends Lead
      * {@inheritdoc}
      */
     public $firstname;
+    public $email_id;
+    public $contact_no;
+    public $city;
     public $person_id;
     public $created_at;
     
@@ -21,7 +24,7 @@ class LeadFilter extends Lead
         return [
             [['lead_id'], 'integer'],
             [['firstname'], 'string'],
-            [['person_id','created_at','firstname'], 'safe'],
+            [['person_id','created_at','firstname','email_id','contact_no','city'], 'safe'],
         ];
     }
   

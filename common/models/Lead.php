@@ -33,7 +33,7 @@ class Lead extends \yii\db\ActiveRecord
         return [
             [['person_id'], 'required'],
             [['person_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['lead_id','created_at', 'updated_at'], 'safe'],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'person_id']],
         ];
     }
