@@ -33,25 +33,35 @@
         {
             $address = new Address();
             $address->load(Yii::$app->getRequest()->getBodyParams(),'');
-            $address->save();
-            // print_r($address);
-            // die;
-            $person = new Person();
-            $person->load(Yii::$app->getRequest()->getBodyParams(),'');
-            $person->address_id = $address->address_id;
-            $person->save();
-            // return $person;
-            // print_r($person);
-            // die;
-            $opportunity = new Opportunity();
-            $opportunity->load(Yii::$app->getRequest()->getBodyParams(),'');
-            $opportunity->person_id = $person->person_id;
-            // echo $person->person_id;
-            // die;
-            $opportunity->save();
-            // print_r($opportunity);
-            // die;
-            return $opportunity;
+            
+            if($address->save())
+            {
+                $person = new Person();
+                $person->load(Yii::$app->getRequest()->getBodyParams(),'');
+                $person->address_id = $address->address_id;
+                if($person->save())
+                {
+                    $opportunity = new Opportunity();
+                    $opportunity->load(Yii::$app->getRequest()->getBodyParams(),'');
+                    $opportunity->person_id = $person->person_id;
+                    if($opportunity->save())
+                    {
+                        return $opportunity;
+                    }
+                    else
+                    {
+                        return $opportunity;
+                    } 
+                }
+                else
+                {
+                    return $person;
+                }
+            }
+            else
+            {
+                return $address;
+            }
         }
         public function actionUpdate($id)
         {
