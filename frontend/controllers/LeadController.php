@@ -15,9 +15,14 @@
         public $modelClass = 'common\models\LeadSearch';
 
         public function actionConvert() {
-            $opportunity = new Opportunity();
-            $opportunity->load(Yii::$app->getRequest()->getBodyParams(),'');
-            $opportunity->save();
+            try {
+                $opportunity = new Opportunity();
+                $opportunity->load(Yii::$app->getRequest()->getBodyParams(),'');
+                $opportunity->save();
+            }
+            catch (\yii\db\Exception $e) {
+                return "Duplicate entry not allowed";
+            }
         }
 
         public function actionIndex()
