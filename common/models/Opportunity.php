@@ -35,10 +35,10 @@ class Opportunity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lead_id', 'person_id', 'plan_id'], 'required'],
+            [['person_id', 'plan_id'], 'required'],
             [['lead_id', 'person_id', 'plan_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['lead_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lead::className(), 'targetAttribute' => ['lead_id' => 'lead_id']],
+            // [['lead_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lead::className(), 'targetAttribute' => ['lead_id' => 'lead_id']],
             [['person_id'], 'exist', 'skipOnError' => true, 'targetClass' => Person::className(), 'targetAttribute' => ['person_id' => 'person_id']],
             [['plan_id'], 'exist', 'skipOnError' => true, 'targetClass' => Plan::className(), 'targetAttribute' => ['plan_id' => 'plan_id']],
         ];
@@ -103,8 +103,8 @@ class Opportunity extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @return \common\models\Query\OpportunityQuery the active query used by this AR class.
      */
-    public static function find()
-    {
-        return new \common\models\Query\OpportunityQuery(get_called_class());
-    }
+    // public static function find()
+    // {
+    //     return new \common\models\Query\OpportunityQuery(get_called_class());
+    // }
 }

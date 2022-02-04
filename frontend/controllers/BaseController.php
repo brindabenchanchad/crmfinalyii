@@ -3,11 +3,37 @@
     namespace frontend\controllers;
     use Yii;
     use yii\rest\ActiveController;
+    use yii\web\Response;
+    use yii\helpers\ArrayHelper;
     use yii\filters\auth\HttpBasicAuth;
 
 
     class BaseController extends ActiveController
     {
+        // public function behaviors()
+        // {
+        //     return ArrayHelper::merge(parent::behaviors(), [
+        //         [
+        //             'class' => 'yii\filters\ContentNegotiator',
+        //             'only' => ['view', 'index'],  // in a controller
+        //             // if in a module, use the following IDs for user actions
+        //             // 'only' => ['user/view', 'user/index']
+        //             'formats' => [
+        //                 'application/json' => Response::FORMAT_JSON,
+        //             ],
+        //             'languages' => [
+        //                 'en',
+        //                 'de',
+        //             ],
+        //         ],
+        //     ]);
+        // }
+
+        // public function init()
+        // {
+        //     parent::init();
+        //     Yii::$app->response->format = Response::FORMAT_JSON;
+        // }
           /**
  * List of allowed domains.
  * Note: Restriction works only for AJAX (using CORS, is not secure).
@@ -28,6 +54,7 @@
     public function actionOptions() {
         Yii::$app->getResponse()->getHeaders()->set('Allow', implode(', ', ['OPTIONS', 'POST', 'GET']));
     }
+    
     public function behaviors()
     {
         $behaviors = parent::behaviors();
