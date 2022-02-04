@@ -4,33 +4,38 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Customer;
+use common\models\Employee;
 use common\models\Person;
-use common\models\CustomerFilter;
-use common\models\Opportunity;
+use common\models\TaskFilter;
+// use common\models\Opportunity;
 use yii\data\ActiveDataFilter;
 
-class CustomerSearch extends Customer
+class TaskSearch extends Task
 {
     
     public function fields()
 {
 	return [
-		'customer_id',
-        'opportunity_id',
+		'task_id',
+        'task_name',
+        'task_description',
+        'task_date',
+        'employee_id',
+        'module_id',
+        'module_name',
         'created_at',
         
       
-	'person' => function($model){
+	'employee' => function($model){
         // print_r($model->opportunity);
         // die;
-		return $model->opportunity->person;
+		return $model->task->employee;
 		},
-        'address' => function($model){
-                    // print_r($model->opportunity);
-                    // die;
-                    return $model->opportunity->person->address;
-                    },
+        // 'address' => function($model){
+        //             // print_r($model->opportunity);
+        //             // die;
+        //             return $model->opportunity->person->address;
+        //             },
         // 'plan' => function($model){
         //     return $model->plan;
         //     },
@@ -42,8 +47,8 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['opportunity_id'], 'required'],
-            [['opportunity_id'], 'integer'],
+            [['task_id','employee_id','module_id'], 'required'],
+            [['task_id','employee_id','module_id'], 'integer'],
            
         ];
     }
@@ -58,7 +63,7 @@ class CustomerSearch extends Customer
         // echo('working');
         // die;
         $filter = new ActiveDataFilter([
-            'searchModel' => 'common\models\CustomerFilter',
+            'searchModel' => 'common\models\TaskFilter',
             // 'attributeMap' => [
             //     'opportunity_id' => 'opportunity.opportunity_id',
             // ],
@@ -75,10 +80,10 @@ class CustomerSearch extends Customer
         // $this->load($params);
         // $query = Customer::find();
         $query = self::find();
-        $query->joinWith(['opportunity','opportunity.person','opportunity.person.address']);
+        $query->joinWith(['employee']);
         $query->where('is_deleted = 0');
         $query->andFilterWhere([
-            'opportunity.opportunity_id'=>$this->opportunity_id,
+            'employee.employee_id'=>$this->employee_id,
         ]);
        
     // print_r($filterCondition);
@@ -94,27 +99,33 @@ class CustomerSearch extends Customer
         ]);
         
         $this->load($params);
-        $query = Customer::find();
+        $query = Task::find();
 
         $dataProvider->setSort([
             'attributes' => [
-                'customer_id',
-                'opportunity_id',
+                'task_id',
+                'task_name',
+                'task_description',
+                'task_date',
+                'task_status',
+                'employee_id',
+                'module_id',
+                'module_name',
                 'created_at',
                 'updated_at',
                 
-                'firstname' => [
-                    'asc' => ['firstname' => SORT_ASC],
-                    'desc' => ['firstname' => SORT_DESC],
-                    'label' => 'Person Name',
+                'taskname' => [
+                    'asc' => ['taskname' => SORT_ASC],
+                    'desc' => ['taskname' => SORT_DESC],
+                    'label' => 'Task Name',
                     'default' => SORT_ASC
                 ],
-                'city' => [
-                    'asc' => ['address.city' => SORT_ASC],
-                    'desc' => ['address.city' => SORT_DESC],
-                    'label' => 'Person Name',
-                    'default' => SORT_ASC
-                ],
+                // 'firstname' => [
+                //     'asc' => ['person.firstname' => SORT_ASC],
+                //     'desc' => ['person.firstname' => SORT_DESC],
+                //     'label' => 'Employee Name',
+                //     'default' => SORT_ASC
+                // ],
             ],
         ]);
 
@@ -124,20 +135,15 @@ class CustomerSearch extends Customer
             return $dataProvider;
         }
         $query->andFilterWhere([
-            'customer_id' => $this->customer_id,
+            'task_id' => $this->task_id,
+            'module_id' => $this->module_id,
+            'module_name' => $this->module_name,
            
             // 'create_date' => $this->create_date,
         ]);
 
 
         return $dataProvider;
-    }
-
-    // public function getOpportunity() {
-    //     return $this->hasOne(Opportunity::className(), ['opportunity_id' => 'opportunity_id']);
-    // }
-
-
-  
+    }  
 }
 

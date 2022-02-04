@@ -17,6 +17,17 @@ class OpportunityController extends BaseController
  */
 
 public $modelClass = 'common\models\OpportunitySearch';
+
+        public function actionConvert(){
+            try{
+                $customer = new Customer();
+                $customer->load(Yii::$app->getRequest()->getBodyParams(),'');
+                $customer->save();
+            }
+            catch(\yii\db\Exception $e){
+                return "Duplicate entry not allowed";
+            }
+        }
         public function actionIndex()
         {
             $searchModel = new OpportunitySearch();

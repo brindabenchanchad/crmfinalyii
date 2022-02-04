@@ -4,14 +4,14 @@ namespace frontend\controllers;
 use Yii;
 use yii\rest\ActiveController;
 use yii\filters\auth\HttpBasicAuth;
-use common\models\Customer;
-use common\models\Opportunity;
+// use common\models\Customer;
+use common\models\Employee;
 use common\models\Person;
 use common\models\Address;
-use common\models\CustomerSearch;
+use common\models\TaskSearch;
 use frontend\controllers\BaseController;
     
-class CustomerController extends BaseController
+class TaskController extends BaseController
 {
 /**
  * List of allowed domains.
@@ -20,12 +20,12 @@ class CustomerController extends BaseController
  * @return array List of domains, that can access to this API
  */
 
-public $modelClass = 'common\models\CustomerSearch';
+public $modelClass = 'common\models\TaskSearch';
         public function actionIndex()
         {
             // echo "working";
             // die;
-            $searchModel = new CustomerSearch();
+            $searchModel = new TaskSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $dataProvider;
@@ -33,39 +33,39 @@ public $modelClass = 'common\models\CustomerSearch';
 
         public function actionCreate()
         {
-             $customer = new Customer();
-             $customer->load(Yii::$app->getRequest()->getBodyParams(),'');
+             $task = new Task();
+             $task->load(Yii::$app->getRequest()->getBodyParams(),'');
             //  print_r('test');
             //  die;
-                $customer->save();
-                    return $customer;
+                $task->save();
+                    return $task;
         }
     
         public function actionUpdate($id)
         {
-            $customer = Customer::findOne($id);
+            $task = Task::findOne($id);
             // $person = Person::findOne($customer->person_id);
-            $opportunity = Opportunity::findOne($customer->opportunity_id);
-            $person = Person::findOne($opportunity->person_id);
+            $employee = Employee::findOne($task->employee_id);
+            $person = Person::findOne($employee->person_id);
             
 
             if($person->load(Yii::$app->getRequest()->getBodyParams(),'')) 
             {
-                // if($opportunity->load(Yii::$app->getRequest()->getBodyParams(),'')) 
-                // {
+                if($employee->load(Yii::$app->getRequest()->getBodyParams(),'')) 
+                {
                     $person->save();
-                    // $opportunity->save();
+                    $employee->save();
                     return "Edited sucessfully";
-                // }
+                }
             }
             return "Edition failed.. try again";
         }
 
             public function actionDelete($id)
             {
-                $customer = Customer::findOne($id);
-                $customer->is_deleted = 1;
-                $customer->save();
+                $task = Task::findOne($id);
+                $task->is_deleted = 1;
+                $task->save();
                 return "Deleted successfully";
             }
 
@@ -73,8 +73,8 @@ public $modelClass = 'common\models\CustomerSearch';
             {
                 // echo"working";
                 // die;
-            $customer = CustomerSearch::findOne($id);
-            return $customer;
+            $task = TaskSearch::findOne($id);
+            return $task;
             }
 }   
 ?>
