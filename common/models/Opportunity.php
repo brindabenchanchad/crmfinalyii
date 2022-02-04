@@ -103,8 +103,8 @@ class Opportunity extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @return \common\models\Query\OpportunityQuery the active query used by this AR class.
      */
-    public static function find()
-    {
-        return new \common\models\Query\OpportunityQuery(get_called_class());
-    }
+    // public static function find()
+    // {
+    //     return new \common\models\Query\OpportunityQuery(get_called_class());
+    // }
 }

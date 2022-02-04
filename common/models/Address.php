@@ -53,7 +53,7 @@ class Address extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getPerson()
+    public function getPeople()
     {
         return $this->hasMany(Person::className(), ['address_id' => 'address_id']);
     }

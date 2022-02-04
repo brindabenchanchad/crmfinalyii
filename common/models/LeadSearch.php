@@ -4,39 +4,32 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Opportunity;
+use common\models\Lead;
 use common\models\Person;
-use common\models\Plan;
 use yii\data\ActiveDataFilter;
 
-class OpportunitySearch extends Opportunity
+class LeadSearch extends Lead
 {
     /**
      * {@inheritdoc}
      */
- 
-     public function fields() {
+    public function fields() {
         return [
-            'opportunity_id',
             'lead_id',
-            'created_at',
             'person' => function ($model) {
                 return $model->person;
             },
             'address' => function ($model) {
                 return $model->person->address;
-            },
-            'plan' => function ($model) {
-                return $model->plan;
-            },
+            }
         ];
     }
-
+ 
     public function rules()
     {
         return [
-            [['opportunity_id','lead_id','person_id','plan_id'], 'integer'],
-            [['opportunity_id','lead_id','person_id','plan_id'], 'safe'],
+            [['lead_id'], 'integer'],
+            [['lead_id','person_id', 'created_at'], 'safe'],
         ];
     }
 
@@ -60,12 +53,9 @@ class OpportunitySearch extends Opportunity
     public function search($params)
     {
         $filter = new ActiveDataFilter([
-            'searchModel' => 'common\models\OpportunityFilter',
+            'searchModel' => 'common\models\LeadFilter',
             'attributeMap' => [
                 'person_id' => 'person.person_id',
-            ],
-            'attributeMap' => [
-                'plan_id' => 'plan.plan_id',
             ],
         ]);
         
@@ -81,29 +71,28 @@ class OpportunitySearch extends Opportunity
                 return $filter;
             }
         }
-        
         $query = self::find();
-        $query->joinWith(['person', 'plan', 'person.address']);
-    
+        $query->joinWith(['person', 'person.address']);
+        
+        // $query->joinWith(['address']);
+
+        $query->where('is_deleted = 0');
+       
         if ($filterCondition !== null) {
             $query->andWhere($filterCondition);
-        }       
-        
-        // if ($filterCondition !== null) {
-        //     $query->andWhere($filterCondition);
-        // }
- 
+        }
  
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
+        $this->load($params);
+
         $dataProvider->setSort([
             'attributes' => [
-                'opportunity_id',
-                'person_id',
-                'plan_id',
                 'lead_id',
+                'created_at',
+                'person_id',
                 'firstname' => [
                     'asc' => ['firstname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC],
@@ -128,16 +117,12 @@ class OpportunitySearch extends Opportunity
                     'label' => 'Person Name',
                     'default' => SORT_ASC
                 ],
-                'plan_name' => [
-                    'asc' => ['plan_name' => SORT_ASC],
-                    'desc' => ['plan_name' => SORT_DESC],
-                    'label' => 'Plan Name',
-                    'default' => SORT_ASC
-                ]
             ],
         ]);
 
-        $this->load($params);
+        // print_r($dataProvider->$query->createCommand()->rawSql;
+        // print_r($dataProvider->query->createCommand()->rawSql);
+        // die;
         
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -147,23 +132,16 @@ class OpportunitySearch extends Opportunity
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'opportunity_id' => $this->opportunity_id,
-            'person_id' => $this->person_id,
-            'plan_id' => $this->plan_id,
             'lead_id' => $this->lead_id,
+            'person_id' => $this->person_id,
+            'created_at' => $this->created_at,
         ]);
-
-        // $query->andFilterWhere(['like', 'person_id', $this->person_id]);
 
         return $dataProvider;
     }
 
     public function getPerson() {
         return $this->hasOne(Person::className(), ['person_id' => 'person_id']);
-    }
-
-    public function getPlan() {
-        return $this->hasOne(Plan::className(), ['plan_id' => 'plan_id']);
     }
 
 }
